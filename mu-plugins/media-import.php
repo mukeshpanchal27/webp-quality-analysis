@@ -1,15 +1,13 @@
 <?php
 /**
- * WP-CLI command to import the images from unsplash API.
- * 
- * @since 1.0.0
- * @package webp-quality-analysis
- */
+ * Plugin Name: WebP Image Import Command
+ * Description: WP-CLI command to import the images from unsplash API.
+ * Version: 0.1
+*/
 
 namespace WebPQualityAnalysis\Import;
 
 use WP_CLI;
-
 
 // Fire up everything, only if we are in WP-CLI mode.
 if ( !defined( 'WP_CLI' ) || !WP_CLI ) {
