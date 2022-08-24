@@ -13,7 +13,7 @@ use WP_CLI;
 if ( !defined( 'WP_CLI' ) || !WP_CLI ) {
     // Then we don't want to load the plugin
     return;
-} 
+}
 
 /**
  * Download an image from the unsplash URL.
@@ -58,10 +58,10 @@ function download_image( $url = '', $name = '' ) {
  * @return void
  */
 function webp_analysis_import_images( $args, $assoc_args ) {
-    $endpoint = getenv( 'WEBP_UNSPLASH_ENDPOINT' );
-    $search_photos_path = getenv( 'WEBP_UNSPLASH_SEARCH_PHOTOS_PATH' );
-    $list_photos_path = getenv( 'WEBP_UNSPLASH_LIST_PHOTOS_PATH' );
-    $access_key = getenv( 'UNSPLASH_ACCESS_KEY' );
+    $endpoint           = defined( 'WEBP_UNSPLASH_ENDPOINT' ) ? WEBP_UNSPLASH_ENDPOINT : '';
+    $search_photos_path = defined( 'WEBP_UNSPLASH_SEARCH_PHOTOS_PATH' ) ? WEBP_UNSPLASH_SEARCH_PHOTOS_PATH : '';
+    $list_photos_path   = defined( 'WEBP_UNSPLASH_LIST_PHOTOS_PATH' ) ? WEBP_UNSPLASH_LIST_PHOTOS_PATH : '';
+    $access_key         = defined( 'UNSPLASH_ACCESS_KEY' ) ? UNSPLASH_ACCESS_KEY : '';
 
     // Check for endpoint.
     if ( empty( $endpoint ) ) {
@@ -104,14 +104,14 @@ function webp_analysis_import_images( $args, $assoc_args ) {
 
         $query_params['w'] = (int) $assoc_args['width'];
     }
-    
+
     // Set the Height.
     if( !empty( $assoc_args['height'] ) ) {
         $query = esc_attr( $assoc_args['height'] );
         $route = $search_photos_path;
 
         $query_params['h'] = (int) $assoc_args['height'];
-    }    
+    }
 
     // Set the number of images to fetch.
     if( !empty( $assoc_args['number'] ) ) {
@@ -148,7 +148,7 @@ function webp_analysis_import_images( $args, $assoc_args ) {
     foreach( $images_data as $image_data ) {
         $url = $image_data->links->download;
         $id = download_image( $url, $image_data->id );
-        
+
         // If there is any error, display and exit.
         if ( is_wp_error( $id ) ) {
             WP_CLI::error( sprintf( 'Error while creating attachment with URL: %s', $url  ) );

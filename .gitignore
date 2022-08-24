@@ -15,3 +15,6 @@ node_modules
 # Ignore all export files but keep the folder
 exports/*
 !exports/.gitkeep
+
+# Ignore override wp-env file
+.wp-env.override.json

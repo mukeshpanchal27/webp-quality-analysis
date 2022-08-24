@@ -5,5 +5,11 @@
         "wp-content/exports": "./exports",
         "wp-content/mu-plugins": "./mu-plugins",
         "php.ini": "./php.ini"
+    },
+    "config": {
+        "WEBP_UNSPLASH_ENDPOINT": "https://api.unsplash.com",
+        "WEBP_UNSPLASH_SEARCH_PHOTOS_PATH": "/search/photos",
+        "WEBP_UNSPLASH_LIST_PHOTOS_PATH": "/photos",
+        "UNSPLASH_ACCESS_KEY": ""
     }
 }
