@@ -1,0 +1,8 @@
+{
+    "core": "https://wordpress.org/wordpress-6.0.1.zip",
+    "plugins": ["WordPress/performance"],
+    "mappings": {
+        "wp-content/mu-plugins": "./mu-plugins",
+        "php.ini": "./php.ini"
+    }
+}
