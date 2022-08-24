@@ -15,7 +15,7 @@ use WP_CLI;
 if ( !defined( 'WP_CLI' ) || !WP_CLI ) {
     // Then we don't want to load the plugin
     return;
-}
+} 
 
 /**
  * Download an image from the unsplash URL.
@@ -60,13 +60,19 @@ function download_image( $url = '', $name = '' ) {
  * @return void
  */
 function webp_analysis_import_images( $args, $assoc_args ) {
-    $endpoint = 'https://api.unsplash.com';
-    $search_photos_path = '/search/photos';
-    $list_photos_path = '/photos';
-    $access_key = 'z3pOnmimIPdiUn8qdr31nPuIFArkLKbz4sfVTw9sXno';
+    $endpoint = getenv( 'WEBP_UNSPLASH_ENDPOINT' );
+    $search_photos_path = getenv( 'WEBP_UNSPLASH_SEARCH_PHOTOS_PATH' );
+    $list_photos_path = getenv( 'WEBP_UNSPLASH_LIST_PHOTOS_PATH' );
+    $access_key = getenv( 'UNSPLASH_ACCESS_KEY' );
 
+    // Check for endpoint.
     if ( empty( $endpoint ) ) {
         WP_CLI::error( 'Unsplash endpoint is not configured.' );
+    }
+
+    // Access key is required.
+    if ( empty( $access_key ) ) {
+        WP_CLI::error( 'Unsplash access key needs to be configured.' );
     }
 
     $endpoint     = untrailingslashit( $endpoint );
