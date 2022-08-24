@@ -6,25 +6,28 @@
 */
 
 use function WP_CLI\Utils\format_items;
+use function \WP_CLI\Utils\write_csv;
 
 /**
  * WebP Analysis Command.
  */
 class Webp_Analysis_Command {
 
+    /**
+     * Runs the WebP Quality Analysis
+     *
+     * @when after_wp_load
+     */
     function run( $args, $assoc_args ) {
 
         $query_args = [
-            'post_type' => 'attachment',
-            'post_status' => 'any',
-            'fields'    => 'ids',
-            'posts_per_page' => 5,
+            'post_type'      => 'attachment',
+            'post_status'    => 'any',
+            'fields'         => 'ids',
+            'posts_per_page' => 500,
         ];
 
         $query = new WP_Query( $query_args );
-
-
-        // var_dump( $query ); die();
 
         // Create a rows array
         $items = array();
@@ -47,8 +50,14 @@ class Webp_Analysis_Command {
             }
         }
 
+        // To CSV
+        $filepath = plugin_dir_path( __FILE__ ) . "../exports/webp-quality-analysis-" . time() . ".csv";
+        $file = fopen( $filepath, 'w' );
+
+        write_csv( $file, $items, array_keys( $items[0] ) );
+
         // Organise metadata into rows.
-       format_items( 'table', $items, array_keys( $items[0] ) );
+        // format_items( 'table', $items, array_keys( $items[0] ) );
     }
 }
 
