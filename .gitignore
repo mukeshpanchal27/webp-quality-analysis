@@ -11,3 +11,7 @@ node_modules
 
 # Ignore .env
 .env
+
+# Ignore all export files but keep the folder
+exports/*
+!exports/.gitkeep
