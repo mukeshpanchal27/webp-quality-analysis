@@ -109,6 +109,22 @@ function webp_analysis_import_images( $args, $assoc_args ) {
         $query_params['h'] = (int) $assoc_args['height'];
     }    
 
+    // Set the number of images to fetch.
+    if( !empty( $assoc_args['number'] ) ) {
+        $query = esc_attr( $assoc_args['number'] );
+        $route = $search_photos_path;
+
+        $query_params['per_page'] = (int) $assoc_args['number'];
+    }
+
+    // Set the page number.
+    if( !empty( $assoc_args['page'] ) ) {
+        $query = esc_attr( $assoc_args['page'] );
+        $route = $search_photos_path;
+
+        $query_params['page'] = (int) $assoc_args['page'];
+    }
+
     $url = add_query_arg(
         $query_params,
         $endpoint . $route
