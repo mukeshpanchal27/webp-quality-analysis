@@ -8,6 +8,11 @@
 use function WP_CLI\Utils\format_items;
 use function \WP_CLI\Utils\write_csv;
 
+if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {
+    //Then we don't want to load the plugin
+    return;
+}
+
 /**
  * WebP Analysis Command.
  */
