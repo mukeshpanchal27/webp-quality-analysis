@@ -1,0 +1,13 @@
+# gitignore file for WebP Quality Analysis
+
+# Files and folders related to build/test tools
+node_modules
+
+# Operating system specific files
+.DS_Store
+
+# Ignore other .gitignore files to allow for personal customizations
+.gitignore
+
+# Ignore .env
+.env
