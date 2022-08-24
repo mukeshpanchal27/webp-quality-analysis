@@ -37,8 +37,7 @@ class Webp_Analysis_Command {
         // Preview results in an ASCII table.
         $preview = isset( $assoc_args['preview'] ) ? true : false;
 
-        // Set the correct limit. When previewing results limit total attachments to 5
-        // otherwise use the limit passed.
+        // Set the correct limit. When previewing results limit total attachments to 5 otherwise use the limit passed.
         $limit = $preview ? min( (int) $assoc_args['limit'], 5 ) : (int) $assoc_args['limit'];
 
         // Create WP_Query to retrieve attachment IDs.
@@ -68,6 +67,19 @@ class Webp_Analysis_Command {
                 continue;
             }
 
+            // Get the full size image data.
+            $items[] = array(
+                'ID'            => $post_id,
+                'filename'      => $metadata['sources']['image/jpeg']['file'],
+                'size'          => 'full',
+                'width'         => $metadata['width'],
+                'height'        => $metadata['height'],
+                'jpeg_filesize' => $metadata['sources']['image/jpeg']['filesize'],
+                'webp_filesize' => $metadata['sources']['image/webp']['filesize'],
+                'larger_webp'   => ( $metadata['sources']['image/jpeg']['filesize'] < $metadata['sources']['image/webp']['filesize'] ) ? 1 : 0,
+            );
+
+            // Get image data for each sub size.
             foreach ( $metadata['sizes'] as $size => $data ) {
                 $items[] = array(
                     'ID'            => $post_id,
