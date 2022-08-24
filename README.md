@@ -14,7 +14,7 @@ To get started with testing the project:
 
 ### Image Import Commands
 
-Before using the command you need to configure the API credentials. To do this create a new `.wp-env.override.json` with configuration below. Yo can get an Unsplash Access Key by creating a developer account and app at [https://unsplash.com/developers](https://unsplash.com/developers).
+Before using the command you need to configure the API credentials. To do this create a new `.wp-env.override.json` with configuration below. You can get an Unsplash Access Key by creating a developer account and app at [https://unsplash.com/developers](https://unsplash.com/developers).
 
 ```
 {
