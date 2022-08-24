@@ -14,7 +14,20 @@ To get started with testing the project:
 
 ### Image Import Commands
 
-Import images from particular category. For example, to import images Cartoon images run following command
+Before using the command you need to configure the API credentials. To do this create a new `.wp-env.override.json` with configuration below. You can get an Unsplash Access Key by creating a developer account and app at [https://unsplash.com/developers](https://unsplash.com/developers).
+
+```
+{
+    "config": {
+        "WEBP_UNSPLASH_ENDPOINT": "https://api.unsplash.com",
+        "WEBP_UNSPLASH_SEARCH_PHOTOS_PATH": "/search/photos",
+        "WEBP_UNSPLASH_LIST_PHOTOS_PATH": "/photos",
+        "UNSPLASH_ACCESS_KEY": "YOUR-API-KEY"
+    }
+}
+```
+
+To import images from particular category. For example, to import images Cartoon images run following command.
 
 ```
 npm run wp-env run cli 'wp media unsplash --query=cartoon'
