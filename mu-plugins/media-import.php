@@ -10,13 +10,15 @@ namespace WebPQualityAnalysis\Import;
 
 use WP_CLI;
 
+
+// Fire up everything, only if we are in WP-CLI mode.
 if ( !defined( 'WP_CLI' ) || !WP_CLI ) {
-    //Then we don't want to load the plugin
+    // Then we don't want to load the plugin
     return;
 }
 
 /**
- * Download an image from the unsplash URL
+ * Download an image from the unsplash URL.
  *
  * @param string $url Image download URL.
  * @return int|WP_Error
@@ -30,24 +32,24 @@ function download_image( $url = '', $name = '' ) {
         $name = time();
     }
 
-    $bits_response = wp_remote_get( $url );
-    $uploaded_file = wp_upload_bits( sprintf( '%s.jpg', $name ), null, wp_remote_retrieve_body( $bits_response ) );
+    $download_url = download_url( $url );
+
+    $file_array = [
+        'name' => sprintf( '%s.jpg', $name ),
+        'tmp_name' => $download_url,
+    ];
 
     // If there is any error, display and exit.
     if ( ! empty( $uploaded_file['error'] ) ) {
         WP_CLI::error( $uploaded_file['error'] );
     }
 
-    $attachment_id = wp_insert_attachment(
-        [],
-        $uploaded_file['file']
+    $attachment_id = media_handle_sideload(
+        $file_array,
+        0,
+        null,
+        []
     );
-
-    if ( ! is_wp_error( $attachment_id ) ) {
-        $metadata = wp_generate_attachment_metadata( $attachment_id, $uploaded_file['file'] );
-        print_r( $metadata );
-        die;
-    }
 
     return $attachment_id;
 }
@@ -75,19 +77,44 @@ function webp_analysis_import_images( $args, $assoc_args ) {
     ];
 
 
+    // Set the query parameter.
     if( !empty( $assoc_args['query'] ) ) {
         $query = esc_attr( $assoc_args['query'] );
         $route = $search_photos_path;
 
-        $query_params['query'] = $assoc_args['query'];
+        $query_params['query'] = (string) $assoc_args['query'];
     }
+
+    // Set the quality.
+    if( !empty( $assoc_args['quality'] ) ) {
+        $query = esc_attr( $assoc_args['quality'] );
+        $route = $search_photos_path;
+
+        $query_params['q'] = (int) $assoc_args['quality'];
+    }
+
+    // Set the width.
+    if( !empty( $assoc_args['width'] ) ) {
+        $query = esc_attr( $assoc_args['width'] );
+        $route = $search_photos_path;
+
+        $query_params['w'] = (int) $assoc_args['width'];
+    }
+    
+    // Set the Height.
+    if( !empty( $assoc_args['height'] ) ) {
+        $query = esc_attr( $assoc_args['height'] );
+        $route = $search_photos_path;
+
+        $query_params['h'] = (int) $assoc_args['height'];
+    }    
 
     $url = add_query_arg(
         $query_params,
         $endpoint . $route
     );
 
-    /*$response = wp_remote_get( $url );
+    $response = wp_remote_get( $url );
     $response_code = wp_remote_retrieve_response_code( $response );
 
     if ( 200 !== $response_code ) {
@@ -95,8 +122,6 @@ function webp_analysis_import_images( $args, $assoc_args ) {
     }
 
     $data = wp_remote_retrieve_body( $response );
-    update_option( 'unsplash_data', $data );*/
-    $data = get_option( 'unsplash_data' );
     $data = json_decode( $data );
     $images_data = (array) $data->results;
 
@@ -112,8 +137,4 @@ function webp_analysis_import_images( $args, $assoc_args ) {
         WP_CLI::success( sprintf( 'Attachment %d has been created', $id ) );
     }
 }
-
-
-// Fire up everything, only if we are in WP-CLI mode.
-
 WP_CLI::add_command( 'media unsplash', __NAMESPACE__ . '\webp_analysis_import_images' );
