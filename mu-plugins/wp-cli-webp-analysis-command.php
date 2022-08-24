@@ -54,7 +54,7 @@ class Webp_Analysis_Command {
             WP_CLI::error( __( 'No attachments found.') );
         }
 
-        WP_CLI::line( sprintf( __( '%d attachments found.', 'webp-quality-analysis' ), count( $query->posts ) ) );
+        WP_CLI::line( sprintf( __( '%d attachments found.', 'webp-quality-analysis' ), $query->found_posts ) );
 
         // Create a items array.
         $items = array();
